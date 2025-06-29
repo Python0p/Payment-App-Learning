@@ -1,6 +1,6 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
-const { User } = require("../db");
+const { User , Account} = require("../db");
 const { JWT_SECRET } = require("../config");
 const zod = require("zod");
 const authMiddleware = require("../middleware");
@@ -43,9 +43,22 @@ router.post("/signup", async (req,res)=>{
         return res.status(411).json({message:"Email already taken"});
     }
 
+    body.firstName = body.firstName.toUpperCase();
+    body.lastName = body.lastName.toUpperCase();
+
+    // body.firstName = UpperCaseFirstName;
+    // body.lastName = UpperLastName;
+
     const dbUser = await User.create(body);
 
-    const token = jwt.sign({userId:dbUser._id},JWT_SECRET);
+    const token = jwt.sign({userId:dbUser._id},JWT_SECRET); 
+
+    // Here is the code to randomly generate some balance
+
+    await Account.create({
+        userId: dbUser._id,
+        balance: Math.floor(Math.random() * 10000)
+    })
 
     res.status(200).json({message: "User created",
         token: token
@@ -104,7 +117,8 @@ router.put("/",authMiddleware, async (req,res)=>{
 
 
 router.get("/bulk", async (req, res) => {
-    const filter = req.query.filter || "";
+
+    const filter = req.query.filter.toUpperCase() || "";
 
     // The above const filter is used beacause the url we get is like ?filter=harkirat so to get that we are 
     // doing this
