@@ -16,7 +16,7 @@ export function Contacts(){
                 setUsers(response.data.user)
 
             }catch(error){
-                console.log(error);
+                console.log(error.response.data.message);
             }
         }
 

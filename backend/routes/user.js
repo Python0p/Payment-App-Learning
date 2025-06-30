@@ -114,9 +114,15 @@ router.put("/",authMiddleware, async (req,res)=>{
 
 });
 
+function escapeRegex(string) {
+    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  }
 
 
 router.get("/bulk", async (req, res) => {
+
+    const safeFilter = escapeRegex(req.query.filter || "");
+    
 
     const filter = req.query.filter.toUpperCase() || "";
 
