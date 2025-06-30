@@ -1,0 +1,60 @@
+import { NameIcon } from "./NameIcon"
+import { Button } from "./Button"
+import { InputCard } from "./InputCard"
+import { UserBalance } from "./UserBalance"
+import { useEffect, useState } from "react"
+import axios from "axios"
+
+export function Contacts(){
+    const [filter , setFilter] = useState("");
+    const [users , setUsers] = useState([]);
+
+    useEffect(()=>{
+        const fetchUsers = async () => {
+            try{
+                const response = await axios.get("http://localhost:3000/api/v1/user/bulk?filter=" + filter);
+                setUsers(response.data.user)
+
+            }catch(error){
+                console.log(error);
+            }
+        }
+
+        fetchUsers();
+    },[filter])
+
+    console.log(users);
+
+    return(
+        <div className="p-4">
+
+            <UserBalance></UserBalance>
+
+            <div className="w-full text-2xl font-bold py-4">
+                Users
+            </div>
+            <InputCard onChange={(e) => {setFilter(e.target.value)}} placeholder={"Search users..."}></InputCard>
+            
+            {users.map(user=> UserCard({user}))}
+            {/* <UserCard user={{firstName:"John" , lastName:"Doe"}}></UserCard> */}
+            
+        </div>
+
+
+    )
+}
+
+function UserCard({user}){
+    return(
+        <div className="flex justify-between py-4">
+                <div className="flex items-center gap-4">
+                    <NameIcon text={user.firstName[0]} />
+                    {user.firstName + " " + user.lastName}
+                </div>
+        
+                <div className="">
+                    <Button text={"Send Money"}></Button>
+                </div>
+            </div>
+    )
+}

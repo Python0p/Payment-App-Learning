@@ -34,13 +34,13 @@ router.post("/signup", async (req,res)=>{
     const {success} = signupSchema.safeParse(body);
 
     if(!success){
-        return res.status(411).json({message:"Email already taken / Incorrect inputs"});
+        return res.status(400).json({message:"Email already taken / Incorrect inputs"});
     }
 
-    const user = User.findOne({username:body.username});
+    const user = await User.findOne({username:body.username});
 
-    if(user._id){
-        return res.status(411).json({message:"Email already taken"});
+    if(user){
+        return res.status(409).json({message:"Email already taken"});
     }
 
     body.firstName = body.firstName.toUpperCase();
@@ -73,7 +73,7 @@ router.post("/signin", async (req,res)=>{
     const {success} = signinSchema.safeParse(body);
 
     if(!success){
-        return res.status(411).json({message: "Error while logging in"});
+        return res.status(400).json({message: "Error while logging in"});
     }
 
     const user = await User.findOne({
@@ -82,7 +82,7 @@ router.post("/signin", async (req,res)=>{
     });
 
     if(!user){
-        return res.status(411).json({message: "Error while logging in"});
+        return res.status(401).json({message: "Error while logging in"});
     }
 
     const token = jwt.sign({userId:user._id},JWT_SECRET);
@@ -100,7 +100,7 @@ router.put("/",authMiddleware, async (req,res)=>{
     const {success} = updateBodySchema.safeParse(body);
 
     if(!success){
-        return res.status(411).json({message: "Error while logging in"});
+        return res.status(400).json({message: "Error while logging in"});
     }
 
     await User.updateOne({
