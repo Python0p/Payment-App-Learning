@@ -2,7 +2,7 @@
 
 >☕✨ P.S. This README was brewed with the help of GPT—because while I'm busy coding with curly hair and coffee, why not let the AI handle the docs? 😉
 
----
+
 
 > Built with passion, caffeine, and curly-haired chaos.  
 > _"Brewing logic like coffee, one curly loop at a time."_
