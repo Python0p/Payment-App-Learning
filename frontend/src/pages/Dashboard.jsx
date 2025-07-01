@@ -3,9 +3,11 @@ import {NameIcon} from "../components/NameIcon"
 import { Contacts } from "../components/Contacts"
 import { useEffect , useState } from "react"
 import axios from "axios"
+import { useNavigate } from "react-router-dom"
 
 export function Dashboard(){
     const [deatails , setDetails] = useState([]);
+    const navigate = useNavigate();
     
     useEffect(()=>{
 
@@ -25,6 +27,7 @@ export function Dashboard(){
         })
         .catch((error) => {
             console.log(error);
+            navigate("/signin");
         });
         
     },[])
@@ -39,10 +42,10 @@ export function Dashboard(){
 
                     <div className="flex items-center text-xl font-medium justify-around">
                         <div>
-                            Hello, {deatails.firstName}
+                            Hello, {deatails?.firstName || "User"}
                         </div>
                         <div className="pl-2">
-                            <NameIcon text={deatails.firstName[0]} />
+                            <NameIcon text={deatails?.firstName?.[0] || "?"} />
                         </div>
                     </div>
                 </div>

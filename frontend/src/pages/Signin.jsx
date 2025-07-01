@@ -3,7 +3,7 @@ import {InputCard} from "../components/InputCard"
 import { BottomWarning } from "../components/BottomWarning"
 import { SubHeading } from "../components/SubHeading"
 import { Button } from "../components/Button"
-import { useState } from "react"
+import { useState , useEffect } from "react"
 import axios from "axios"
 import { useNavigate } from "react-router-dom"
 
@@ -11,6 +11,12 @@ export function Signin(){
     const [email , setEmail] = useState("");
     const [password , setPassword] = useState("");
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (localStorage.getItem("token")) {
+            navigate("/dashboard");
+        }
+    }, []);
 
     return(
         <div className="bg-blue-300">
