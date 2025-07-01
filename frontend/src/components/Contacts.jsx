@@ -4,10 +4,13 @@ import { InputCard } from "./InputCard"
 import { UserBalance } from "./UserBalance"
 import { useEffect, useState } from "react"
 import axios from "axios"
+import { useNavigate } from "react-router-dom"
 
 export function Contacts(){
     const [filter , setFilter] = useState("");
     const [users , setUsers] = useState([]);
+    
+
 
     useEffect(()=>{
         const fetchUsers = async () => {
@@ -35,7 +38,10 @@ export function Contacts(){
             </div>
             <InputCard onChange={(e) => {setFilter(e.target.value)}} placeholder={"Search users..."}></InputCard>
             
-            {users.map(user=> UserCard({user}))}
+            {users.map(user => (
+                <UserCard key={user._id} user={user} /> // ✅ JSX — now React knows it's a component
+            ))}
+
             {/* <UserCard user={{firstName:"John" , lastName:"Doe"}}></UserCard> */}
             
         </div>
@@ -45,6 +51,7 @@ export function Contacts(){
 }
 
 function UserCard({user}){
+    const navigate = useNavigate();
     return(
         <div className="flex justify-between py-4">
                 <div className="flex items-center gap-4">
@@ -53,7 +60,7 @@ function UserCard({user}){
                 </div>
         
                 <div className="">
-                    <Button text={"Send Money"}></Button>
+                    <Button onClick={() => {navigate("/send?id=" + user._id + "&name=" + user.firstName + "&lastName=" + user.lastName)}} text={"Send Money"}></Button>
                 </div>
             </div>
     )

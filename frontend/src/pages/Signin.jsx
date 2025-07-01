@@ -5,10 +5,12 @@ import { SubHeading } from "../components/SubHeading"
 import { Button } from "../components/Button"
 import { useState } from "react"
 import axios from "axios"
+import { useNavigate } from "react-router-dom"
 
 export function Signin(){
     const [email , setEmail] = useState("");
     const [password , setPassword] = useState("");
+    const navigate = useNavigate();
 
     return(
         <div className="bg-blue-300">
@@ -38,7 +40,8 @@ export function Signin(){
                                         password
                                     }
                                 );
-                                localStorage.setItem("token" , "Bearer "+ res.data.token);        
+                                localStorage.setItem("token" , "Bearer "+ res.data.token); 
+                                navigate("/dashboard");       
                             }catch(err){
                                 alert(err.response.data.message);
                             }

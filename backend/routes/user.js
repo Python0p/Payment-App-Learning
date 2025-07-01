@@ -122,7 +122,7 @@ function escapeRegex(string) {
 router.get("/bulk", async (req, res) => {
 
     const safeFilter = escapeRegex(req.query.filter || "");
-    
+
 
     const filter = req.query.filter.toUpperCase() || "";
 
@@ -148,6 +148,26 @@ router.get("/bulk", async (req, res) => {
             lastName: user.lastName,
             _id: user._id
         }))
+    })
+})
+
+
+router.get("/details", authMiddleware, async (req, res) => {
+
+    const user = await User.findOne({
+        _id: req.userId
+    });
+
+    if(!user){
+        return res.status(404).json({
+            message: "User not found"
+        });
+    }
+
+    res.json({
+        username: user.username,
+        firstName: user.firstName,
+        lastName: user.lastName,
     })
 })
 

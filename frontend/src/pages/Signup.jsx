@@ -5,6 +5,7 @@ import { SubHeading } from "../components/SubHeading"
 import { Button } from "../components/Button"
 import axios from "axios"
 import { useState } from "react"
+import { useNavigate } from "react-router-dom"
 
 
 
@@ -13,6 +14,7 @@ export function Signup(){
     const [lastName , setLastName] = useState("");
     const [email , setEmail] = useState("");
     const [password , setPassword] = useState("");
+    const navigate = useNavigate();
     return(
         <div className="bg-blue-300">
             <div className="flex justify-center items-center h-screen">
@@ -46,6 +48,8 @@ export function Signup(){
                                 password
                             })
                             localStorage.setItem("token","Bearer "+response.data.token)
+                            navigate("/dashboard")
+
                             }
                             catch(err){
                                 const message = err.response.data.message
